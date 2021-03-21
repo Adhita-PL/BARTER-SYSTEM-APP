@@ -1,17 +1,22 @@
 import React from 'react';
+import { createAppContainer, createSwitchNavigator} from 'react-navigation';
+
+
 import WelcomeScreen from './screens/WelcomeScreen';
-import { createAppContainer, createSwitchNavigator,} from 'react-navigation';
 import { AppDrawerNavigator } from './components/AppDrawerNavigator'
+import { AppTabNavigator } from './components/AppTabNavigator'
+
 
 export default function App() {
   return (
-      <AppContainer/>
+    <AppContainer/>
   );
 }
 
-const SwitchNavigator = createSwitchNavigator({
+const switchNavigator = createSwitchNavigator({
   WelcomeScreen:{screen: WelcomeScreen},
-  Drawer:{screen: AppDrawerNavigator}
+  Drawer:{screen: AppDrawerNavigator},
+  BottomTab: {screen: AppTabNavigator},
 })
 
-const AppContainer =  createAppContainer(SwitchNavigator); 
+const AppContainer =  createAppContainer(switchNavigator);

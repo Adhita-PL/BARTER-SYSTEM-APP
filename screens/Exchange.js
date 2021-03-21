@@ -52,6 +52,16 @@ export default class Exchange extends Component {
        itemName : '',
        description :''
      })
+
+
+
+     // NOTE: Comment below return statement when you test the app in ios
+     // ToastAndroid.showWithGravityAndOffset('Item ready to exchange',
+     //    ToastAndroid.SHORT,
+     //  );
+     // return this.props.navigation.navigate('HomeScreen')
+
+     // NOTE:  Comment the below return statement when you test the app in android
      return Alert.alert(
           'Item ready to exchange',
           '',
@@ -79,6 +89,7 @@ export default class Exchange extends Component {
   }
 
   getExchangeRequest =()=>{
+    // getting the requested item
   var exchangeRequest=  db.collection('exchange_requests')
     .where('username','==',this.state.userName)
     .get()
@@ -116,13 +127,17 @@ export default class Exchange extends Component {
   }
 
   updateExchangeRequestStatus=()=>{
+    //updating the book status after receiving the book
     db.collection('requested_requests').doc(this.state.docId)
     .update({
       item_status : 'recieved'
     })
+
+    //getting the  doc id to update the users doc
     db.collection('users').where('username','==',this.state.userName).get()
     .then((snapshot)=>{
       snapshot.forEach((doc) => {
+        //updating the doc
         db.collection('users').doc(doc.id).update({
           IsExchangeRequestActive: false
         })
@@ -131,16 +146,21 @@ export default class Exchange extends Component {
 
 }
   sendNotification=()=>{
+    //to get the first name and last name
     db.collection('users').where('username','==',this.state.userName).get()
     .then((snapshot)=>{
       snapshot.forEach((doc)=>{
         var name = doc.data().first_name
         var lastName = doc.data().last_name
+
+        // to get the donor id and item name
         db.collection('all_notifications').where('exchangeId','==',this.state.exchangeId).get()
         .then((snapshot)=>{
           snapshot.forEach((doc) => {
             var donorId  = doc.data().donor_id
             var bookName =  doc.data().item_name
+
+            //targert user id is the donor id to send notification to the user
             db.collection('all_notifications').add({
               "targeted_user_id" : donorId,
               "message" : name +" " + lastName + " received the item " + itemName ,
@@ -156,6 +176,7 @@ export default class Exchange extends Component {
   render()
   {
     if (this.state.IsExchangeRequestActive === true){
+      // status screen
       return(
         <View style = {{flex:1,justifyContent:'center'}}>
          <View style={{borderColor:"orange",borderWidth:2,justifyContent:'center',alignItems:'center',padding:10,margin:10}}>
@@ -188,6 +209,7 @@ export default class Exchange extends Component {
           <TextInput
             style={styles.formTextInput}
             placeholder ={"Item Name"}
+            maxLength ={8}
             onChangeText={(text)=>{
               this.setState({
                 itemName: text
