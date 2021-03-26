@@ -58,16 +58,6 @@ export default class Exchange extends Component {
        description :'',
        itemValue : ""
      })
-
-
-
-     // NOTE: Comment below return statement when you test the app in ios
-     // ToastAndroid.showWithGravityAndOffset('Item ready to exchange',
-     //    ToastAndroid.SHORT,
-     //  );
-     // return this.props.navigation.navigate('HomeScreen')
-
-     // NOTE:  Comment the below return statement when you test the app in android
      return Alert.alert(
           'Item ready to exchange',
           '',
@@ -96,7 +86,6 @@ export default class Exchange extends Component {
   }
 
   getExchangeRequest =()=>{
-    // getting the requested item
   var exchangeRequest=  db.collection('exchange_requests')
     .where('username','==',this.state.userName)
     .get()
